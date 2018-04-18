@@ -89,7 +89,7 @@ function restart () {
 		card.classList.remove('show');
 	}
 	resetCounter();
-	resetLives();
+	//resetLives();
 }
 
 function showCard (card) {
@@ -166,7 +166,7 @@ function addToOpenList (card) {
 			matchBothCards(card);
 			openCards = [];
 		} else {
-			loseLife()
+			//loseLife()
 		}
 		openCards = [];
 	}
