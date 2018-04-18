@@ -14,10 +14,11 @@ let cards = [
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+const TOTAL_LIVES = 6;
 let openCards = [];
 let cardsClicked = [];
 let moveCounter = 0;
-let livesCounter = 6;
+let livesCounter = TOTAL_LIVES;
 let shuffledCards = shuffle(cards);
 
 const deckElement = document.getElementById('game-deck');
@@ -38,7 +39,7 @@ shuffledCards.forEach(function(card) {
 });
 
 deckElement.appendChild(deckFragment);
-
+resetLives();
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -84,7 +85,7 @@ restartButton.addEventListener('click', function() {
 })
 
 function restart () {
-	const matchedCards = document.getElementsByClassName('card')
+	const matchedCards = document.querySelectorAll('.card')
 	matchedCards.forEach(function(card) {
 		card.classList.remove('match');
 		card.classList.remove('show');	
@@ -124,15 +125,17 @@ function loseLife () {
 		gameOver();
 		restart();
 	}
+	console.log("livesCounter", livesCounter);
 }
 
 function resetLives () {
-	livesCounter = 5;
+	livesCounter = TOTAL_LIVES;
+	const starElementCount = [...Array(livesCounter).keys()];
 	const stars = document.getElementById('stars-list');
 	while( stars.firstChild ){
   		stars.removeChild( stars.firstChild );
 	}
-	[1,2,3,4,5,6].forEach(function(i) {
+	starElementCount.forEach(function(i) {
 		let starElement = document.createElement('li');
 		let starElementIcon = document.createElement('i');
 		starElementIcon.classList.add('fa');
