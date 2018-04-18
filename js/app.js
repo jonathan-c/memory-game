@@ -1,15 +1,12 @@
 /*
  * Create a list that holds all of your cards
  */
-let cards = ["diamond", "paper-plane-o", "anchor", "bolt", 
-			"cube", "anchor", "leaf", "bicycle", 
-			"diamond", "bomb", "leaf", "bomb", 
-			"bolt", "bicycle", "paper-plane-o", "cube"];
-
-let openCards = [];
-let cardsClicked = [];
-let moveCounter = 0;
-let livesCounter = 5;
+let cards = [
+	"diamond", "paper-plane-o", "anchor", "bolt", 
+	"cube", "anchor", "leaf", "bicycle", 
+	"diamond", "bomb", "leaf", "bomb", 
+	"bolt", "bicycle", "paper-plane-o", "cube"
+];
 
 /*
  * Display the cards on the page
@@ -17,27 +14,31 @@ let livesCounter = 5;
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-
+let openCards = [];
+let cardsClicked = [];
+let moveCounter = 0;
+let livesCounter = 6;
 let shuffledCards = shuffle(cards);
+
 const deckElement = document.getElementById('game-deck');
 const deckFragment = document.createDocumentFragment();
+const moveCounterElement = document.getElementById('move-counter');
+const restartButton = document.getElementById('restart-button');
 
-for (let card of shuffledCards) {
+shuffledCards.forEach(function(card) {
 	const newListElement = document.createElement('li');
-	newListElement.classList.add("card");
+	newListElement.classList.add('card');
 
-	const newIconElement = document.createElement("i");
+	const newIconElement = document.createElement('i');
 	newListElement.classList.add('fa');
 	newIconElement.classList.add(`fa-${card}`);
 
 	newListElement.appendChild(newIconElement);
 	deckFragment.appendChild(newListElement);
-}
+});
 
 deckElement.appendChild(deckFragment);
 
-const moveCounterElement = document.getElementById('move-counter');
-const restartButton = document.getElementById('restart-button');
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -66,11 +67,11 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-const cardList = document.getElementsByClassName("card");
+const cardList = document.getElementsByClassName('card');
 
 Array.from(cardList).forEach(function(element) {
 	element.addEventListener('click', function() {
-		if (element.classList.contains("show")) {
+		if (element.classList.contains('show')) {
 			return;
 		}
 		showCard(element);
@@ -84,12 +85,12 @@ restartButton.addEventListener('click', function() {
 
 function restart () {
 	const matchedCards = document.getElementsByClassName('card')
-	for (let card of matchedCards) {
+	matchedCards.forEach(function(card) {
 		card.classList.remove('match');
-		card.classList.remove('show');
-	}
+		card.classList.remove('show');	
+	})
 	resetCounter();
-	//resetLives();
+	resetLives();
 }
 
 function showCard (card) {
@@ -131,9 +132,9 @@ function resetLives () {
 	while( stars.firstChild ){
   		stars.removeChild( stars.firstChild );
 	}
-	[1,2,3,4,5].forEach(function(i) {
-		let starElement = document.createElement("li");
-		let starElementIcon = document.createElement("i");
+	[1,2,3,4,5,6].forEach(function(i) {
+		let starElement = document.createElement('li');
+		let starElementIcon = document.createElement('i');
 		starElementIcon.classList.add('fa');
 		starElementIcon.classList.add('fa-star');
 		starElement.appendChild(starElementIcon);
@@ -154,27 +155,30 @@ function matchBothCards(card) {
 }
 
 function addToOpenList (card) {
-	incrementCounter();
 	if (openCards.length == 0 && cardsClicked.length >= 2) {
 		hideCard(cardsClicked[cardsClicked.length-1]);
 		hideCard(cardsClicked[cardsClicked.length-2]);
 	}
 	openCards.push(card.firstChild.className);
 	cardsClicked.push(card);
+	if (openCards.length == 2) {
+		incrementCounter();
+	}
 	if (openCards.length > 1) {
 		if (openCards[0] == openCards[1]) {
 			matchBothCards(card);
 			openCards = [];
 		} else {
-			//loseLife()
+			loseLife()
 		}
 		openCards = [];
 	}
+		
 }
 
 function gameOver () {
 	if (livesCounter == 0) {
-		alert("You lose! You ran out of lives.");
+		alert('You lose! You ran out of lives.');
 	} else {
 		alert(`You win! Your final score was ${moveCounter}`);
 	}
