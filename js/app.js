@@ -56,7 +56,6 @@ function shuffle(array) {
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
-
     return array;
 }
 
@@ -201,8 +200,8 @@ modalSpan.onclick = function() {
 window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
+	    restart();
     }
-    restart();
 }
 
 function restartTimer () {
