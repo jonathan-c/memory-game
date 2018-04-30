@@ -4,27 +4,38 @@
     <meta charset="utf-8">
     <title>Matching Game</title>
     <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
 
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modal-p-content"></p>
+      </div>
+
+    </div>
     <div class="container">
         <header>
             <h1>Matching Game</h1>
+            <h3 id="demo"></h3>
         </header>
 
         <section class="score-panel">
-        	<ul id="stars-list" class="stars">
-        		
-        	</ul>
+            <ul id="stars-list" class="stars">
+                
+            </ul>
 
-        	<span id="move-counter" class="moves">0</span> Moves
+            <span id="move-counter" class="moves">0</span> Moves
 
             <div id="restart-button" class="restart">
-        		<i class="fa fa-repeat"></i>
-        	</div>
+                <i class="fa fa-repeat"></i>
+            </div>
         </section>
 
         <ul id="game-deck" class="deck">

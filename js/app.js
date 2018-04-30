@@ -1,12 +1,12 @@
 /*
  * Create a list that holds all of your cards
  */
-let cards = [
+const card = [
 	"diamond", "paper-plane-o", "anchor", "bolt", 
-	"cube", "anchor", "leaf", "bicycle", 
-	"diamond", "bomb", "leaf", "bomb", 
-	"bolt", "bicycle", "paper-plane-o", "cube"
+	"cube", "leaf", "bicycle", "bomb"
 ];
+
+const cards = [...card, ...card];
 
 /*
  * Display the cards on the page
@@ -25,6 +25,9 @@ const deckElement = document.getElementById('game-deck');
 const deckFragment = document.createDocumentFragment();
 const moveCounterElement = document.getElementById('move-counter');
 const restartButton = document.getElementById('restart-button');
+const modal = document.getElementById('myModal');
+const modalContent = document.getElementById('modal-p-content');
+const modalSpan = document.getElementsByClassName("close")[0];
 
 shuffledCards.forEach(function(card) {
 	const newListElement = document.createElement('li');
@@ -40,6 +43,7 @@ shuffledCards.forEach(function(card) {
 
 deckElement.appendChild(deckFragment);
 resetLives();
+restartTimer();
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -92,6 +96,7 @@ function restart () {
 	})
 	resetCounter();
 	resetLives();
+	restartTimer();
 }
 
 function showCard (card) {
@@ -180,9 +185,52 @@ function addToOpenList (card) {
 }
 
 function gameOver () {
+	modal.style.display = "block";
 	if (livesCounter == 0) {
-		alert('You lose! You ran out of lives.');
+		modalContent.textContent = 'You lose! You ran out of lives.';
 	} else {
-		alert(`You win! Your final score was ${moveCounter}`);
+		modalContent.textContent = `You win! Your final score was ${moveCounter}`;
 	}
+}
+
+modalSpan.onclick = function() {
+    modal.style.display = "none";
+    restart();
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+    restart();
+}
+
+function restartTimer () {
+	// Set the date we're counting down to
+	var countDownDate = new Date().getTime() + 300000;
+
+	// Update the count down every 1 second
+	var x = setInterval(function() {
+
+	  // Get todays date and time
+	  var now = new Date().getTime();
+
+	  // Find the distance between now an the count down date
+	  var distance = countDownDate - now;
+
+	  // Time calculations for days, hours, minutes and seconds
+	  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+	  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+	  // Display the result in the element with id="demo"
+	  document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
+
+	  // If the count down is finished, write some text 
+	  if (distance < 0) {
+	    clearInterval(x);
+	    document.getElementById("demo").innerHTML = "EXPIRED";
+	    modal.style.display = "block";
+	    modalContent.textContent = `You lose! You ran out of time!`;
+	  }
+	}, 1000);	
 }
